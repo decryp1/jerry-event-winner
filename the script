@@ -13,7 +13,7 @@ Tab:CreateButton({
     Callback = function()
         local boss = workspace:FindFirstChild("Boss")
         if boss and boss:FindFirstChildOfClass("Humanoid") then
-            boss:FindFirstChildOfClass("Humanoid").Sit = true
+            boss:FindFirstChildOfClass("Humanoid").Health = 0
         end
     end
 })
