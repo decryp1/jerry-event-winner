@@ -9,11 +9,23 @@ local Window = Rayfield:CreateWindow({
 local Tab = Window:CreateTab("main")
 
 Tab:CreateButton({
-    Name = "instant win",
+    Name = "instant win (USE AFTER CUTSCENE)",
     Callback = function()
         local boss = workspace:FindFirstChild("Boss")
         if boss and boss:FindFirstChildOfClass("Humanoid") then
+            boss:FindFirstChildOfClass("Humanoid").MaxHealth = 0
+            task.wait(0.1)
             boss:FindFirstChildOfClass("Humanoid").Health = 0
+        end
+    end
+})
+
+Tab:CreateButton({
+    Name = "instant win v2 (use if you messed up v1)",
+    Callback = function()
+        local boss = workspace:FindFirstChild("Boss")
+        if boss and boss:FindFirstChildOfClass("Humanoid") then
+            boss:FindFirstChildOfClass("Humanoid").Sit = true
         end
     end
 })
