@@ -1,0 +1,35 @@
+if game.PlaceId == 6403373529 then
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+    local Window = Rayfield:CreateWindow({
+        Name = "teleport to jerry",
+        LoadingTitle = "hello",
+        LoadingSubtitle = "sigma"
+    })
+
+    local Tab = Window:CreateTab("sigma")
+
+    Tab:CreateButton({
+        Name = "teleport to jerry place",
+        Callback = function()
+            for _, clickDetector in ipairs(workspace.XmasSnowPeeps:GetDescendants()) do
+                if clickDetector:IsA("ClickDetector") then
+                    fireclickdetector(clickDetector)
+                end
+            end
+            task.wait(1)
+            firetouchinterest(
+                game.Players.LocalPlayer.Character.HumanoidRootPart,
+                workspace.XmasIsland.Portal,
+                0
+            )
+            firetouchinterest(
+                game.Players.LocalPlayer.Character.HumanoidRootPart,
+                workspace.XmasIsland.Portal,
+                1
+            )
+        end
+    })
+else
+loadstring(game:HttpGet('https://raw.githubusercontent.com/decryp1/jerry-event-winner/refs/heads/main/the%20script'))()
+end
