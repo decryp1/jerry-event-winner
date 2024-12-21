@@ -78,7 +78,7 @@ Tab:CreateToggle({
             task.wait(0.1)
             for _, obj in ipairs(workspace.Boss:GetDescendants()) do
                 if obj:IsA("Part") and obj.Name:match("HB$") then
-                    obj.Size = Vector3.new(200, 200, 200)
+                    obj.Size = Vector3.new(300, 300, 300)
                 end
             end
         end
@@ -100,3 +100,69 @@ Tab:CreateToggle({
     end
 })
 
+local RunService = game:GetService("RunService")
+local Player = game.Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+local floor -- just making the floor variable :tongue:
+local orbiting = false -- sets to false off rip so it doesnt break
+local orbitRadius = 100 -- how far away it tweens from the specific cframe, so tween radius
+local orbitSpeed = 1 -- the lower this is the faster it goes in circles
+
+local floorCFrame = CFrame.new(
+    -6.14876747, 98.1062012, -74.5441132,
+    0.306487322, -3.67567488e-08, 0.951874733,
+    3.66088031e-08, 1, 2.68277045e-08,
+    -0.951874733, 2.6624642e-08, 0.306487322
+)
+
+local function makefloor() -- i only make a floor so that the tweening doesnt bug yk
+    if not floor then
+        floor = Instance.new("Part")
+        floor.Size = Vector3.new(1000, 0.2, 1000)
+        floor.CFrame = floorCFrame
+        floor.Anchored = true
+        floor.Transparency = 1
+        floor.Parent = workspace
+    end
+end
+
+local function delfloor()
+    if floor then
+        floor:Destroy()
+        floor = nil
+    end
+end
+
+local function beginorbit()
+    orbiting = true
+    RunService.Heartbeat:Connect(function(deltaTime)
+        if not orbiting then return end
+        local currentTime = tick() * orbitSpeed
+        local x = math.cos(currentTime) * orbitRadius -- waves textbox and interactive helper saved my ass here :sob:
+        local z = math.sin(currentTime) * orbitRadius
+        local targetPosition = floorCFrame.Position + Vector3.new(x, 0, z)
+        local lookAtCFrame = CFrame.new(targetPosition, floorCFrame.Position)
+
+        HumanoidRootPart.CFrame = lookAtCFrame
+    end)
+end
+
+local function stoporbit()
+    orbiting = false
+end
+
+Tab:CreateToggle({
+    Name = "get santa / passive win (wait 10 mins after using to get badge)",
+    CurrentValue = false,
+    Callback = function(Value)
+        if Value then
+            makefloor()
+            beginorbit()
+        else
+            delfloor()
+            stoporbit()
+        end
+    end
+})
