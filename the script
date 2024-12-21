@@ -1,15 +1,46 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
 local Window = Rayfield:CreateWindow({
     Name = "jerry event fucker 💔",
     LoadingTitle = "shits so ass",
     LoadingSubtitle = "by herkle <3"
 })
 
-local Tab = Window:CreateTab("main")
+local MainTab = Window:CreateTab("main")
+local AttackTab = Window:CreateTab("attacks/other")
+local SantaTab = Window:CreateTab("santa")
+local RunService = game:GetService("RunService")
+local Player = game.Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+local asnowmen = false
+local floor -- just making the floor variable :tongue:
+local orbiting = false -- sets to false off rip so it doesnt break
+local orbitRadius = 100 -- how far away it tweens from the specific cframe, so tween radius
+local orbitSpeed = 1 -- the lower this is the faster it goes in circles
+local floorCFrame = CFrame.new(
+    -6.14876747, 98.1062012, -74.5441132,
+    0.306487322, -3.67567488e-08, 0.951874733,
+    3.66088031e-08, 1, 2.68277045e-08,
+    -0.951874733, 2.6624642e-08, 0.306487322
+)
 
-Tab:CreateButton({
-    Name = "instant win (USE AFTER CUTSCENE)",
+MainTab:CreateButton({
+    Name = "actual instant win (use whenever)",
+    Callback = function()
+        local boss = workspace:FindFirstChild("Boss")
+        if boss and boss:FindFirstChild("HumanoidRootPart") then
+            local hrp = boss:FindFirstChild("HumanoidRootPart")
+            local targetCFrame = CFrame.new(140.518753, -142.716217, 119.428696, -0.865387619, -0.0649181232, 0.496880174, 2.32002662e-09, 0.991572857, 0.129550457, -0.501103044, 0.11211136, -0.858094871)
+            local newCFrame = targetCFrame * CFrame.new(0, -100, 0)
+            hrp.CFrame = newCFrame
+        end
+    end
+})
+
+local Section = MainTab:CreateSection("seriously just use the one above, its the best")
+
+MainTab:CreateButton({
+    Name = "instant win v2 (USE AFTER CUTSCENE)",
     Callback = function()
         local boss = workspace:FindFirstChild("Boss")
         if boss and boss:FindFirstChildOfClass("Humanoid") then
@@ -20,8 +51,8 @@ Tab:CreateButton({
     end
 })
 
-Tab:CreateButton({
-    Name = "instant win v2 (use if you messed up v1)",
+MainTab:CreateButton({
+    Name = "instant win v3 (use if you messed up v2)",
     Callback = function()
         local boss = workspace:FindFirstChild("Boss")
         if boss and boss:FindFirstChildOfClass("Humanoid") then
@@ -30,8 +61,8 @@ Tab:CreateButton({
     end
 })
 
-Tab:CreateToggle({
-    Name = "loop slap (use before instant win so that it works)",
+MainTab:CreateToggle({
+    Name = "loop slap (use after instant win v2 if you use it)",
     CurrentValue = false,
     Callback = function(Value)
         local RunService = game:GetService("RunService")
@@ -55,7 +86,8 @@ Tab:CreateToggle({
     end
 })
 
-Tab:CreateToggle({
+
+AttackTab:CreateToggle({
     Name = "delete jerries attacks",
     CurrentValue = false,
     Callback = function(Value)
@@ -70,7 +102,7 @@ Tab:CreateToggle({
     end
 })
 
-Tab:CreateToggle({
+AttackTab:CreateToggle({
     Name = "expand jerries hitboxes",
     CurrentValue = false,
     Callback = function(Value)
@@ -85,7 +117,44 @@ Tab:CreateToggle({
     end
 })
 
-Tab:CreateToggle({
+AttackTab:CreateToggle({
+    Name = "freeze jerry",
+    CurrentValue = false,
+    Callback = function(Value)
+        local hrp = workspace:FindFirstChild("Boss") and workspace.Boss:FindFirstChild("HumanoidRootPart")
+        if hrp and hrp:IsA("BasePart") then
+            hrp.Anchored = Value
+        end
+    end
+})
+
+local function anchorsnowmen()
+    asnowmen = not asnowmen
+    while asnowmen do
+        task.wait(0.1)
+        for _, model in ipairs(workspace:GetChildren()) do
+            if model:IsA("Model") and model.Name == "SnowmanClone" then
+                local head = model:FindFirstChild("Head")
+                if head and head:IsA("BasePart") then
+                    head.Anchored = true
+                end
+            end
+        end
+    end
+end
+
+AttackTab:CreateToggle({
+    Name = "freeze snowmen",
+    CurrentValue = false,
+    Callback = function(Value)
+        asnowman = Value
+        if asnowman then
+            anchorsnowmen()
+        end
+    end
+})
+
+AttackTab:CreateToggle({
     Name = "delete all snowmen clones",
     CurrentValue = false,
     Callback = function(Value)
@@ -99,23 +168,6 @@ Tab:CreateToggle({
         end
     end
 })
-
-local RunService = game:GetService("RunService")
-local Player = game.Players.LocalPlayer
-local Character = Player.Character or Player.CharacterAdded:Wait()
-local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
-
-local floor -- just making the floor variable :tongue:
-local orbiting = false -- sets to false off rip so it doesnt break
-local orbitRadius = 100 -- how far away it tweens from the specific cframe, so tween radius
-local orbitSpeed = 1 -- the lower this is the faster it goes in circles
-
-local floorCFrame = CFrame.new(
-    -6.14876747, 98.1062012, -74.5441132,
-    0.306487322, -3.67567488e-08, 0.951874733,
-    3.66088031e-08, 1, 2.68277045e-08,
-    -0.951874733, 2.6624642e-08, 0.306487322
-)
 
 local function makefloor() -- i only make a floor so that the tweening doesnt bug yk
     if not floor then
@@ -153,8 +205,8 @@ local function stoporbit()
     orbiting = false
 end
 
-Tab:CreateToggle({
-    Name = "get santa / passive win (wait 10 mins after using to get badge)",
+SantaTab:CreateToggle({
+    Name = "get santa / passive (use for 10 mins)",
     CurrentValue = false,
     Callback = function(Value)
         if Value then
@@ -164,5 +216,26 @@ Tab:CreateToggle({
             delfloor()
             stoporbit()
         end
+    end
+})
+local extrashitTab = Window:CreateTab("extra stuff", "plus")
+extrashitTab:CreateButton({
+    Name = "Infinite Yield",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+    end
+})
+
+extrashitTab:CreateButton({
+    Name = "Remote Spy",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua"))()
+    end
+})
+
+extrashitTab:CreateButton({
+    Name = "Dex Explorer",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
     end
 })
