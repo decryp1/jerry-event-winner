@@ -1,0 +1,90 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "jerry event fucker 💔",
+    LoadingTitle = "shits so ass",
+    LoadingSubtitle = "by herkle <3"
+})
+
+local Tab = Window:CreateTab("main")
+
+Tab:CreateButton({
+    Name = "instant win",
+    Callback = function()
+        local boss = workspace:FindFirstChild("Boss")
+        if boss and boss:FindFirstChildOfClass("Humanoid") then
+            boss:FindFirstChildOfClass("Humanoid").Sit = true
+        end
+    end
+})
+
+Tab:CreateToggle({
+    Name = "loop slap (use before instant win so that it works)",
+    CurrentValue = false,
+    Callback = function(Value)
+        local RunService = game:GetService("RunService")
+        local args = {
+            [1] = "Attack"
+        }
+
+        local connection
+        if Value then
+            connection = RunService.Heartbeat:Connect(function()
+                pcall(function()
+                    game:GetService("Players").LocalPlayer.Character.Default.RemoteFunction:InvokeServer(unpack(args))
+                end)
+            end)
+        else
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
+        end
+    end
+})
+
+Tab:CreateToggle({
+    Name = "delete jerries attacks",
+    CurrentValue = false,
+    Callback = function(Value)
+        while Value do
+            task.wait(0.1)
+            for _, obj in ipairs(workspace.Attacks:GetDescendants()) do
+                if obj:IsA("Part") or obj:IsA("Model") then
+                    obj:Destroy()
+                end
+            end
+        end
+    end
+})
+
+Tab:CreateToggle({
+    Name = "expand jerries hitboxes",
+    CurrentValue = false,
+    Callback = function(Value)
+        while Value do
+            task.wait(0.1)
+            for _, obj in ipairs(workspace.Boss:GetDescendants()) do
+                if obj:IsA("Part") and obj.Name:match("HB$") then
+                    obj.Size = Vector3.new(200, 200, 200)
+                end
+            end
+        end
+    end
+})
+
+Tab:CreateToggle({
+    Name = "delete all snowmen clones",
+    CurrentValue = false,
+    Callback = function(Value)
+        while Value do
+            task.wait(0.1)
+            for _, obj in ipairs(workspace:GetDescendants()) do
+                if obj:IsA("Model") and obj.Name == "SnowmanClone" then
+                    obj:Destroy()
+                end
+            end
+        end
+    end
+})
+
